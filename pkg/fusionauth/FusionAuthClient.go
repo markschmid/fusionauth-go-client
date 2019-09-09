@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -2301,6 +2302,7 @@ func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID
 	body.Set("client_id", clientID)
 	body.Set("redirect_uri", redirectURI)
 	encodedBody := strings.NewReader(body.Encode())
+	log.Println("encoded body: ", encodedBody)
 	method := http.MethodPost
 	req, err := c.NewRequest(method, uri, encodedBody)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
