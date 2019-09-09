@@ -2296,6 +2296,7 @@ func (c *FusionAuthClient) VerifyRegistration(verificationId string) (interface{
 func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID string, clientSecret string, redirectURI string) (interface{}, error) {
 	//var body interface{}
 	uri := "/oauth2/token"
+	host := "https://id.neoos.ch"
 	body := url.Values{}
 	body.Set("code", code)
 	body.Set("grant_type", "authorization_code")
@@ -2304,7 +2305,7 @@ func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID
 	encodedBody := strings.NewReader(body.Encode())
 	log.Println("encoded body: ", encodedBody)
 	method := http.MethodPost
-	req, err := http.NewRequest(method, uri, encodedBody)
+	req, err := http.NewRequest(method, host+uri, encodedBody)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Authorization", "Basic dummy")
 	var resp interface{}
