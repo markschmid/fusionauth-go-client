@@ -25,6 +25,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 // URIWithSegment returns a string with a "/" delimiter between the uri and segment
@@ -2300,7 +2301,7 @@ func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID
 	body.Set("client_id", clientID)
 	body.Set("redirect_uri", redirectURI)
 	method := http.MethodPost
-	req, err := c.NewRequest(method, uri, body)
+	req, err := c.NewRequest(method, uri, strings.NewReader(body.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	var resp interface{}
 	_, err = c.Do(req, &resp)
