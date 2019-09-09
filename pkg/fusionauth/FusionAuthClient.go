@@ -2289,3 +2289,47 @@ func (c *FusionAuthClient) VerifyRegistration(verificationId string) (interface{
 	_, err = c.Do(req, &resp)
 	return resp, err
 }
+
+// ExchangeOAuthCodeForAccessToken ...
+func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID string, clientSecret string, redirectURI string) (interface{}, error) {
+	//var body interface{}
+	uri := "/oauth2/token"
+	body := url.Values{}
+	body.Set("code", code)
+	body.Set("grant_type", "authorization_code")
+	body.Set("client_id", clientID)
+	body.Set("redirect_uri", redirectURI)
+	method := http.MethodPost
+	req, err := c.NewRequest(method, uri, body)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	var resp interface{}
+	_, err = c.Do(req, &resp)
+	return resp, err
+}
+
+/*
+   * Exchanges an OAuth authorization code for an access token.
+   *
+   * @param string $code          The OAuth authorization code.
+   * @param string $client_id     The OAuth client_id.
+   * @param string $client_secret (Optional) The OAuth client _secret used for Basic Auth.
+   * @param string $redirect_uri   The OAuth redirect_uri.
+   * @return ClientResponse that contains the access token if the request was successful.
+   * @throws \Exception
+   *
+	 public function exchangeOAuthCodeForAccessToken($code, $client_id, $client_secret, $redirect_uri)
+	 {
+		 $post_data = array(
+			 'code' => $code,
+			 'grant_type' => 'authorization_code',
+			 'client_id' => $client_id,
+			 'redirect_uri' => $redirect_uri
+		 );
+		 return $this->start()->uri("/oauth2/token")
+			 ->basicAuthorization($client_id, $client_secret)
+			 ->successResponseHandler(new FormDataBodyHandler($post_data))
+			 ->errorResponseHandler(new JSONResponseHandler())
+			 ->post()
+			 ->go();
+	 }
+*/
