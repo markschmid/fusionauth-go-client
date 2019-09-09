@@ -2304,7 +2304,7 @@ func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID
 	encodedBody := strings.NewReader(body.Encode())
 	log.Println("encoded body: ", encodedBody)
 	method := http.MethodPost
-	req, err := http.NewRequest(method, uri, body)
+	req, err := http.NewRequest(method, uri, encodedBody)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Authorization", "Basic dummy")
 	var resp interface{}
