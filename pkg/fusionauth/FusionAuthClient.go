@@ -2304,36 +2304,10 @@ func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID
 	encodedBody := strings.NewReader(body.Encode())
 	log.Println("encoded body: ", encodedBody)
 	method := http.MethodPost
-	req, err := http.NewRequest(method, uri, encodedBody)
+	req, err := http.NewRequest(method, uri, body)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Authorization", "Basic dummy")
 	var resp interface{}
 	_, err = c.Do(req, &resp)
 	return resp, err
 }
-
-/*
-   * Exchanges an OAuth authorization code for an access token.
-   *
-   * @param string $code          The OAuth authorization code.
-   * @param string $client_id     The OAuth client_id.
-   * @param string $client_secret (Optional) The OAuth client _secret used for Basic Auth.
-   * @param string $redirect_uri   The OAuth redirect_uri.
-   * @return ClientResponse that contains the access token if the request was successful.
-   * @throws \Exception
-   *
-	 public function exchangeOAuthCodeForAccessToken($code, $client_id, $client_secret, $redirect_uri)
-	 {
-		 $post_data = array(
-			 'code' => $code,
-			 'grant_type' => 'authorization_code',
-			 'client_id' => $client_id,
-			 'redirect_uri' => $redirect_uri
-		 );
-		 return $this->start()->uri("/oauth2/token")
-			 ->basicAuthorization($client_id, $client_secret)
-			 ->successResponseHandler(new FormDataBodyHandler($post_data))
-			 ->errorResponseHandler(new JSONResponseHandler())
-			 ->post()
-			 ->go();
-	 }
-*/
