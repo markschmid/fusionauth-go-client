@@ -2294,7 +2294,10 @@ func (c *FusionAuthClient) VerifyRegistration(verificationId string) (interface{
 
 // ExchangeOAuthCodeForAccessToken ...
 func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID string, clientSecret string, redirectURI string) (interface{}, error) {
-	uri := "/oauth2/token"
+	// prepare URL
+	rel := &url.URL{Path: "/oauth2/token"}
+	u := c.BaseURL.ResolveReference(rel)
+	// prepare body
 	body := url.Values{}
 	body.Set("code", code)
 	body.Set("grant_type", "authorization_code")
@@ -2302,9 +2305,9 @@ func (c *FusionAuthClient) ExchangeOAuthCodeForAccessToken(code string, clientID
 	body.Set("redirect_uri", redirectURI)
 	encodedBody := strings.NewReader(body.Encode())
 	log.Println("encoded body: ", encodedBody)
-	log.Println("uristier: ", uri)
+	log.Println("uristier: ", u.String())
 	method := http.MethodPost
-	req, err := http.NewRequest(method, uri, encodedBody)
+	req, err := http.NewRequest(method, u.String(), encodedBody)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	//req.Header.Set("Authorization", "Basic dummy")
 	var resp interface{}
